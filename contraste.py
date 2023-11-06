@@ -84,11 +84,11 @@ def todas_imagens():
         cv2.waitKey(0)
         cv2.destroyAllWindows() 
         
-img = tamanho("img.jpg")
+"""img = tamanho("img.jpg")
 teste = controller(img, 172, 190)
 cv2.imshow('GEEK', img) 
 cv2.imshow('GEK', teste) 
 
 
 cv2.waitKey(0)
-cv2.destroyAllWindows() 
+cv2.destroyAllWindows() """

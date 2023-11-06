@@ -8,5 +8,5 @@ from selecionar import *
 
 
 
-definirois('imagens','h1')
+definirois('imagens','F1')
 #h - >6,8,9,11

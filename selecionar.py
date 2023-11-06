@@ -5,6 +5,7 @@ from tamanho import *
 from excel import *
 import os.path
 from openpyxl import *
+from contraste import *
 
 
 #arquivos = listardiretorio()
@@ -58,6 +59,8 @@ def rois(texto, local,pasta):
     
     while (1):
         cv2.imshow(texto +" - "+ local, img)
+        teste = controller(img, 172, 190)
+        cv2.imshow("contraste "+texto +" - "+ local, teste)
         if cv2.waitKey(20) & 0xFF == 27:
             break
         if count == 4:
