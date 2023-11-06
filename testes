@@ -1,0 +1,157 @@
+import cv2
+import numpy as np 
+from rois_antigo import *
+#Suavização de imagens
+#img = cv2.imread('blur/blur.jpg') 
+img = cv2.imread('blur/blur2.jpg')
+img = img[::4,::4]
+def visualizar_tudo(img,vet):
+    suave = np.vstack([ 
+                    np.hstack([img, vet[0]]), 
+                    np.hstack([vet[1], vet[2]]), 
+                    np.hstack([vet[3], vet[4]]), ])
+    #suave =cv2.resize(suave , (760, 1100))
+    cv2.imshow("varias tamanhos", suave) 
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+def visualizar(img,vet,nome):
+    suave = np.hstack([ 
+                    img, vet[0], 
+                    vet[1], vet[2], 
+                    vet[3]
+                    ])
+    #suave =cv2.resize(suave , (760, 1100))
+    cv2.imshow(nome, suave) 
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+    
+def media(img, size=30):
+    if(size==3):
+        return cv2.blur(img, (3,3)) 
+    elif(size==5):
+        return cv2.blur(img, (5,5))
+    elif(size==7):  
+        return cv2.blur(img, (7,7))
+    elif(size==9): 
+        return cv2.blur(img, (9,9))
+    elif(size==11):
+        return cv2.blur(img, (11,11))
+    else:
+        return [    
+            cv2.blur(img, ( 3, 3)), 
+            cv2.blur(img, (5,5)), 
+            cv2.blur(img, (7,7)),
+            cv2.blur(img, (9,9)), 
+            cv2.blur(img, (11,11))
+        ]
+    
+    
+def gaussiana(img, size=30):
+    if(size==3):
+        return cv2.GaussianBlur(img, ( 3, 3), 0) 
+    elif(size==5):
+        return cv2.GaussianBlur(img, ( 5, 5), 0)
+    elif(size==7):  
+        return cv2.GaussianBlur(img, ( 7, 7), 0)
+    elif(size==9): 
+        return cv2.GaussianBlur(img, ( 9, 9), 0)
+    elif(size==11):
+        return cv2.GaussianBlur(img, ( 11, 11), 0)
+    else:
+        return [
+            cv2.GaussianBlur(img, ( 3, 3), 0), 
+            cv2.GaussianBlur(img, ( 5, 5), 0), 
+            cv2.GaussianBlur(img, ( 7, 7), 0), 
+            cv2.GaussianBlur(img, ( 9, 9), 0), 
+            cv2.GaussianBlur(img, (11, 11), 0)
+        ]
+                        
+def mediana(img, size=30):
+    if(size==3):
+        return cv2.medianBlur(img, 3) 
+    elif(size==5):
+        return cv2.medianBlur(img, 5)
+    elif(size==7):  
+        return cv2.medianBlur(img, 7)
+    elif(size==9): 
+        return cv2.medianBlur(img, 9)
+    elif(size==11):
+        return cv2.medianBlur(img, 11)
+    else:
+        return [
+            cv2.medianBlur(img, 3),
+            cv2.medianBlur(img, 5), 
+            cv2.medianBlur(img, 7),
+            cv2.medianBlur(img, 9), 
+            cv2.medianBlur(img, 11)
+        ]
+    
+ 
+def bilateral(img, size=30): 
+    if(size==3):
+        return cv2.bilateralFilter(img, 3, 21, 21)
+    elif(size==5):
+        return cv2.bilateralFilter(img, 5, 35, 35) 
+    elif(size==7):  
+        return cv2.bilateralFilter(img, 7, 49, 49)
+    elif(size==9): 
+        return cv2.bilateralFilter(img, 9, 63, 63)
+    elif(size==11):
+        return cv2.bilateralFilter(img, 11, 77, 77)
+    else:
+        return [  
+            cv2.bilateralFilter(img, 3, 21, 21),
+            cv2.bilateralFilter(img, 5, 35, 35), 
+            cv2.bilateralFilter(img, 7, 49, 49),
+            cv2.bilateralFilter(img, 9, 63, 63), 
+            cv2.bilateralFilter(img, 11, 77, 77)
+        ]
+    
+
+
+def printmoda(imagens, size=30): 
+    print("img")
+    print(moda(img))
+    if(size==3):
+        print("3x3")
+        print(moda(imagens))
+        
+    elif(size==5):
+        print("5x5")
+        print(moda(imagens))
+        
+    elif(size==7):  
+        print("7x7")
+        print(moda(imagens))
+        
+    elif(size==9): 
+        print("9x9")
+        print(moda(imagens))
+        
+    elif(size==11):
+        print("11x11")
+        print(moda(imagens))
+    else:
+        print("3x3")
+        print(moda(imagens[0]))
+        print("5x5")
+        print(moda(imagens[1]))
+        print("7x7")
+        print(moda(imagens[2]))
+        print("9x9")
+        print(moda(imagens[3]))
+        print("11x11")
+        print(moda(imagens[4]))
+ 
+def view_all_filtros(img,size,nome):  
+    imagens=[[],[],[],[]] 
+    imagens[0] = media(img,size)
+    imagens[1] = gaussiana(img,size)
+    imagens[2] = mediana(img,size)
+    imagens[3] = bilateral(img,size)
+
+    visualizar(img,imagens,nome)
+
+view_all_filtros(img,11,"filtro 11")#3,5,7,9,11
+view_all_filtros(img,5,"filtro 5")
