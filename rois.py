@@ -161,7 +161,7 @@ def teste_histamina(diretorio):
 
 # dados -> 216 ->72
 # histamina -> 36 ->36
-#salva_no_bd()
+salva_no_bd()
 
 #teste_histamina('H1-1')
 

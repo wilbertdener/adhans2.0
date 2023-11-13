@@ -142,4 +142,4 @@ def teste_histamina(diretorio):
     print(df_fora.head(12))
     
     
-#teste_histamina('H1-1')
+teste_histamina('H1-1')
