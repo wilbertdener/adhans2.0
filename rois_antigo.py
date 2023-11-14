@@ -112,7 +112,7 @@ def get_nome(chave=True):
 #print(get_nome(False))
 
 
-#salva_no_bd()
+salva_no_bd()
 """df = get_dados('H1-1 0s')
 print(df)
 for x in df:
@@ -142,4 +142,4 @@ def teste_histamina(diretorio):
     print(df_fora.head(12))
     
     
-teste_histamina('H1-1')
+#teste_histamina('H1-1')

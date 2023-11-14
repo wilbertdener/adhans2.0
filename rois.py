@@ -161,7 +161,7 @@ def teste_histamina(diretorio):
 
 # dados -> 216 ->72
 # histamina -> 36 ->36
-salva_no_bd()
+#salva_no_bd()
 
 #teste_histamina('H1-1')
 
@@ -176,7 +176,7 @@ df_dentro_pos = df_dentro[df_dentro['tempo'] == "30s"]
 
 #print(df_dentro_pos[df_dentro_pos['foto'].str.startswith('H1')].sort_values(by=['foto']).head())
 
-df_ordenado = df.sort_values(by=['foto','lesao','tempo'])
+df_ordenado = df.sort_values(by=['foto','tempo'])
 df_ordenado = df_ordenado.drop(['h1', 'h2','total_pixels','id'], axis=1)
 filtro = df_ordenado[df_ordenado['foto'].str.startswith('H3')]
 print(filtro)
