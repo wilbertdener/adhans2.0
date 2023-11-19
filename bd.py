@@ -81,3 +81,12 @@ def todos_dados():
   mycursor = mydb.cursor()
   df = pd.read_sql_query("SELECT * FROM dados", mydb)
   return df
+
+
+def dados_padra(rgb, hsv, hls, nome, tempo ):
+      
+  mycursor = mydb.cursor()
+  sql = "INSERT INTO dados_padronizados (foto,tempo, r,g,b,h1,s1,v,h2,l,s2) VALUES (%s, %s, %s,%s, %s, %s,%s, %s, %s,%s, %s)"
+  val = (nome, tempo,rgb[0],rgb[1],rgb[2],hsv[0],hsv[1],hsv[2],hls[0],hls[1],hls[2])
+  mycursor.execute(sql, val)
+  mydb.commit()

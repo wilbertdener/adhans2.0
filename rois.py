@@ -165,7 +165,7 @@ def teste_histamina(diretorio):
 
 #teste_histamina('H1-1')
 
-df= todos_dados()
+'''df= todos_dados()
 df_fora = df[df['lesao'] == "fora"]
 df_dentro =df[df['lesao'] == "dentro"]
 
@@ -180,4 +180,4 @@ df_ordenado = df.sort_values(by=['foto','tempo'])
 df_ordenado = df_ordenado.drop([ 'h2','total_pixels','id'], axis=1)
 filtro = df_ordenado[df_ordenado['foto'].str.startswith('H3')]
 print(filtro)
-df_ordenado.to_excel("resultados.xlsx")
+df_ordenado.to_excel("resultados.xlsx")'''
