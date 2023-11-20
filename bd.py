@@ -112,3 +112,8 @@ def probabilidade(rgb, hsv, hls, grupo,menor ):
   val = (grupo, rgb[0],rgb[1],rgb[2],hsv[0],hsv[1],hsv[2],hls[0],hls[1],hls[2],menor)
   mycursor.execute(sql, val)
   mydb.commit()
+  
+def get_dados_pad():
+  mycursor = mydb.cursor()
+  df = pd.read_sql_query("SELECT * FROM dados_padronizados " , mydb)
+  return df
