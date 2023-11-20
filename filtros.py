@@ -107,6 +107,30 @@ def filtro_han(nomes, num, canal):
     return(filtrot['grupo'].values.tolist())
 
 
+def acerto(df,nomes):
+    qtdh = len(df[df['foto'].str.startswith("H")])
+    qtdf = len(df[df['foto'].str.startswith("F")])
+    qtdv = len(df[df['foto'].str.startswith("V")])
+    qtd = len(df)
+    
+    df1 = df[df['foto']==nomes[0]].copy()
+    for x in nomes[1:len(nomes)]:
+        df1 = pd.concat([df1,df[df['foto']==x]])
+    
+    
+    qtdhsel = len(df1[df1['foto'].str.startswith("H")])
+    qtdfsel = len(df1[df1['foto'].str.startswith("F")])
+    qtdvsel = len(df1[df1['foto'].str.startswith("V")])
+    qtdsel = len(df1)
+    
+    acerto =  (qtdhsel+(qtdf-qtdfsel)+(qtdv-qtdvsel))/qtd
+    erro =  ((qtdh-qtdhsel)+qtdvsel+qtdfsel)/qtd
+
+    print("Porcentagem de acerto : {:.2f} %".format(acerto*100))
+    print("Porcentagem de erro : {:.2f} %".format(erro*100))
+
+
+
 df = get_dados_pad()
 vitifiltro = filtro_viti(df)
 filtrohan = filtro_han(vitifiltro,10,'r')
@@ -114,6 +138,10 @@ print('Total amostra de F: '+str(len(df[df['foto'].str.startswith("F")])/2))
 print('Total amostra de H: '+str(len(df[df['foto'].str.startswith("H")])/2))
 print('Total amostra de V: '+str(len(df[df['foto'].str.startswith("V")])/2))
 print('Total amostra :'+str(len(df)/2))
+
+
+acerto(df,filtrohan)
+
 #print(filtrohan)
 #print(filtrohan2)
 #print(vitifiltro)
