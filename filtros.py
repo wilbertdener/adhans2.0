@@ -66,12 +66,13 @@ def filtro_viti(df):
             # s2, - 11-34=23 han max=37; min,media vit=5,35
         # h1-5-11 han max=72; min,media vit=2,11
                         # s1 D=29 han max=41; min,media vit=21,46
-                        
-    print("Amostra H :"+str(len(filtroh)))
-    print("Filtro H :"+str(len(filtroh2)))
-    print("Amostra V :"+str(len(filtrov)))
-    print("Filtro V :"+str(len(filtrov2)))
-    print("Filtro F :"+str(len(filtrof2)))
+    print("F :"+str(len(filtrof)))
+    print("Filtro F :"+str(len(filtrof2))+"\n")                    
+    print("H :"+str(len(filtroh)))
+    print("Filtro H :"+str(len(filtroh2))+"\n")
+    print("V :"+str(len(filtrov)))
+    print("Filtro V :"+str(len(filtrov2))+"\n")
+    
     
     result = pd.concat([filtroh2, filtrov2,filtrof2])
     
@@ -132,13 +133,13 @@ def acerto(df,nomes):
 
 
 df = get_dados_pad()
-vitifiltro = filtro_viti(df)
-filtrohan = filtro_han(vitifiltro,10,'r')
+
 print('Total amostra de F: '+str(len(df[df['foto'].str.startswith("F")])/2))
 print('Total amostra de H: '+str(len(df[df['foto'].str.startswith("H")])/2))
 print('Total amostra de V: '+str(len(df[df['foto'].str.startswith("V")])/2))
-print('Total amostra :'+str(len(df)/2))
-
+print('Total amostra :'+str(len(df)/2)+"\n")
+vitifiltro = filtro_viti(df)
+filtrohan = filtro_han(vitifiltro,10,'r')
 
 acerto(df,filtrohan)
 
