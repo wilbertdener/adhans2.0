@@ -12,9 +12,9 @@ from itertools import filterfalse
 def qtde_aceito(num,canal):
     df = get_dados_pad_les_tim()
     df = df.drop('id', axis=1)
-    filtroh = df[df['grupo'].str.startswith("H")]
-    filtrof = df[df['grupo'].str.startswith("F")]
-    filtrov = df[df['grupo'].str.startswith("V")]
+    filtroh = df[df['foto'].str.startswith("H")]
+    filtrof = df[df['foto'].str.startswith("F")]
+    filtrov = df[df['foto'].str.startswith("V")]
     menorf=0
     menorh=0
     menorv=0
@@ -83,16 +83,16 @@ def filtro_han(nomes, num, canal):
     
     df = get_dados_pad_les_tim()
     df = df.drop('id', axis=1)
-    dffiltro = df[df['grupo']==nomes[0]].copy()
+    dffiltro = df[df['foto']==nomes[0]].copy()
     for x in nomes[1:len(nomes)]:
-        dffiltro = pd.concat([dffiltro,df[df['grupo']==x]])
+        dffiltro = pd.concat([dffiltro,df[df['foto']==x]])
         
     
-    #df =df[df['grupo']==('H8-1'or 'H7-1')]
+    #df =df[df['foto']==('H8-1'or 'H7-1')]
     filtrot = dffiltro[dffiltro[canal]>=num]
-    filtroh = dffiltro[dffiltro['grupo'].str.startswith("H")]
-    filtrof = dffiltro[dffiltro['grupo'].str.startswith("F")]
-    filtrov = dffiltro[dffiltro['grupo'].str.startswith("V")]
+    filtroh = dffiltro[dffiltro['foto'].str.startswith("H")]
+    filtrof = dffiltro[dffiltro['foto'].str.startswith("F")]
+    filtrov = dffiltro[dffiltro['foto'].str.startswith("V")]
     menorh = filtroh[filtroh[canal]>=num]
     menorf = filtrof[filtrof[canal]>=num]
     menorv = filtrov[filtrov[canal]>=num]
@@ -105,7 +105,7 @@ def filtro_han(nomes, num, canal):
     print("V : "+str(len(menorv))+" \nprob no grupo V: "+str("{:.2f}".format(len(menorv)/11))+" \n ") 
     print("Total : "+str(len(filtrot))+" \nprob no grupo Total: "+str("{:.2f}".format(len(filtrot)/(44+18+11)))+" \n ")  
     
-    return(filtrot['grupo'].values.tolist())
+    return(filtrot['foto'].values.tolist())
 
 
 def acerto(df,nomes):
@@ -140,6 +140,8 @@ print('Total amostra de V: '+str(len(df[df['foto'].str.startswith("V")])/2))
 print('Total amostra :'+str(len(df)/2)+"\n")
 vitifiltro = filtro_viti(df)
 filtrohan = filtro_han(vitifiltro,10,'r')
+print("sem passar pelo primeiro filtro")
+filtrohan2 = filtro_han(df['foto'],10,'r')
 
 acerto(df,filtrohan)
 
