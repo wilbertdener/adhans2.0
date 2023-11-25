@@ -13,6 +13,7 @@ count = 0
 vet = []
 
 def rois(texto, local,pasta):
+    
     foto1 = tamanho(pasta+"/"+local)
 
     def draw_lines(event, x, y, flags, param):
@@ -71,7 +72,7 @@ def rois(texto, local,pasta):
 
 
 
-def desenho_todos_quadrados(vet, nome,pasta):
+def desenho_todos_quadrados(vet, nome,pasta,time):
 
     antes =[]
     depois = []
@@ -90,21 +91,21 @@ def desenho_todos_quadrados(vet, nome,pasta):
                                (255, 255, 255), 10)
     
     roidentro1 = imgcut[ (antes[0][1] - (5*razao)):(antes[0][1] + (5*razao)),(antes[0][0] - (5*razao)):(antes[0][0] + (5*razao))] 
-    cv2.imwrite("roi dentro/"+nome[:len(nome)-4]+"roi1.jpg", roidentro1)
+    cv2.imwrite("roi dentro/"+nome[:len(nome)-4]+" "+time+"roi1.jpg", roidentro1)
     
     imgdesenho = cv2.rectangle(imgdesenho, (antes[1][0] - (5*razao), antes[1][1] - (5*razao)),
                                (antes[1][0] + (5*razao), antes[1][1] + (5*razao)),
                                (255, 255, 255), 10)
     
     roidentro2 = imgcut[ (antes[1][1] - (5*razao)):(antes[1][1] + (5*razao)),(antes[1][0] - (5*razao)):(antes[1][0] + (5*razao))] 
-    cv2.imwrite("roi dentro/"+nome[:len(nome)-4]+"roi2.jpg", roidentro2)
+    cv2.imwrite("roi dentro/"+nome[:len(nome)-4]+" "+time+"roi2.jpg", roidentro2)
     
     imgdesenho = cv2.rectangle(imgdesenho, (antes[2][0] - (5*razao), antes[2][1] - (5*razao)),
                                (antes[2][0] + (5*razao), antes[2][1] + (5*razao)),
                                (255, 255, 255), 10)
     
     roidentro3 = imgcut[ (antes[2][1] - (5*razao)):(antes[2][1] + (5*razao)) , (antes[2][0] - (5*razao)):(antes[2][0] + (5*razao))] 
-    cv2.imwrite("roi dentro/"+nome[:len(nome)-4]+"roi3.jpg", roidentro3)
+    cv2.imwrite("roi dentro/"+nome[:len(nome)-4]+" "+time+"roi3.jpg", roidentro3)
     
     # distante a area
     imgdesenho = cv2.rectangle(imgdesenho, (depois[0][0] - (5*razao), depois[0][1] - (5*razao)),
@@ -112,21 +113,21 @@ def desenho_todos_quadrados(vet, nome,pasta):
                                (121, 39, 165), 10)
     
     roifora1 = imgcut[ (depois[0][1] - (5*razao)):(depois[0][1] + (5*razao)) , (depois[0][0] - (5*razao)):(depois[0][0] + (5*razao))] 
-    cv2.imwrite("roi fora/"+nome[:len(nome)-4]+"roi1.jpg", roifora1)
+    cv2.imwrite("roi fora/"+nome[:len(nome)-4]+" "+time+"roi1.jpg", roifora1)
     
     imgdesenho = cv2.rectangle(imgdesenho, (depois[1][0] - (5*razao), depois[1][1] - (5*razao)),
                                (depois[1][0] + (5*razao), depois[1][1] + (5*razao)),
                                (121, 39, 165), 10)
     
     roifora2 = imgcut[ (depois[1][1] - (5*razao)):(depois[1][1] + (5*razao)) , (depois[1][0] - (5*razao)):(depois[1][0] + (5*razao))] 
-    cv2.imwrite("roi fora/"+nome[:len(nome)-4]+"roi2.jpg", roifora2)
+    cv2.imwrite("roi fora/"+nome[:len(nome)-4]+" "+time+"roi2.jpg", roifora2)
     
     imgdesenho = cv2.rectangle(imgdesenho, (depois[2][0] - (5*razao), depois[2][1] - (5*razao)),
                                (depois[2][0] + (5*razao), depois[2][1] + (5*razao)),
                                (121, 39, 165), 10)
     
     roifora3 = imgcut[ (depois[2][1] - (5*razao)):(depois[2][1] + (5*razao)) , (depois[2][0] - (5*razao)):(depois[2][0] + (5*razao))] 
-    cv2.imwrite("roi fora/"+nome[:len(nome)-4]+"roi3.jpg", roifora3)
+    cv2.imwrite("roi fora/"+nome[:len(nome)-4]+" "+time+"roi3.jpg", roifora3)
     
     
     
@@ -148,9 +149,9 @@ def desenho_todos_quadrados(vet, nome,pasta):
 
 
 # filename not an image file
-def definirois(pasta,plan):
-    arquivos = listardiretorio(pasta)
-    vettempo = ["0s","5s","10s","20s","30s","60s"]
+def definirois(pasta,arquivos):
+    #arquivos = listardiretorio(pasta)
+    #vettempo = ["0s","5s","10s","20s","30s","60s"]
     conttempo = 0
 
     for arq in arquivos:
@@ -170,7 +171,11 @@ def definirois(pasta,plan):
         rois("Selecione 3 rois fora da lesão e proximos a area do teste", arq,pasta)
         vetdois.append(vet)
 
-        pontos = desenho_todos_quadrados(vetdois, arq, pasta)
+        
+        if(conttempo%2==0):
+            pontos = desenho_todos_quadrados(vetdois, arq, pasta,"0s")
+        else:
+            pontos = desenho_todos_quadrados(vetdois, arq, pasta,"30s")
 
         #criar_planilha_excel(pontos, pasta+"/"+arq, diferenca(pasta+"/"+arq),pasta,plan,vettempo[conttempo%6])
         conttempo =conttempo +1
@@ -178,12 +183,3 @@ def definirois(pasta,plan):
 
 
 
-
-"""
-import cv2 
-imagem = cv2.imread('ponte.jpg') 
-recorte = imagem[100:200, 100:200] 
-cv2.imshow("Recorte da imagem", recorte) 
-cv2.imwrite("recorte.jpg", recorte) #salva no disco
-
-"""

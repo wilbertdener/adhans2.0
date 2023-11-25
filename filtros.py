@@ -66,12 +66,12 @@ def filtro_viti(df):
             # s2, - 11-34=23 han max=37; min,media vit=5,35
         # h1-5-11 han max=72; min,media vit=2,11
                         # s1 D=29 han max=41; min,media vit=21,46
-    print("F :"+str(len(filtrof)))
+    '''print("F :"+str(len(filtrof)))
     print("Filtro F :"+str(len(filtrof2))+"\n")                    
     print("H :"+str(len(filtroh)))
     print("Filtro H :"+str(len(filtroh2))+"\n")
     print("V :"+str(len(filtrov)))
-    print("Filtro V :"+str(len(filtrov2))+"\n")
+    print("Filtro V :"+str(len(filtrov2))+"\n")'''
     
     
     result = pd.concat([filtroh2, filtrov2,filtrof2])
@@ -99,11 +99,11 @@ def filtro_han(nomes, num, canal):
     
     
     
-    print("Total canal "+canal+" : \n ")
+    '''print("Total canal "+canal+" : \n ")
     print("F : "+str(len(menorf))+" \nprob no grupo F: "+str("{:.2f}".format(len(menorf)/44))+" \n ")
     print("H : "+str(len(menorh))+" \nprob no grupo H: "+str("{:.2f}".format(len(menorh)/18))+" \n ")
     print("V : "+str(len(menorv))+" \nprob no grupo V: "+str("{:.2f}".format(len(menorv)/11))+" \n ") 
-    print("Total : "+str(len(filtrot))+" \nprob no grupo Total: "+str("{:.2f}".format(len(filtrot)/(44+18+11)))+" \n ")  
+    print("Total : "+str(len(filtrot))+" \nprob no grupo Total: "+str("{:.2f}".format(len(filtrot)/(44+18+11)))+" \n ") ''' 
     
     return(filtrot['foto'].values.tolist())
 
@@ -126,25 +126,81 @@ def acerto(df,nomes):
     
     acerto =  (qtdhsel+(qtdf-qtdfsel)+(qtdv-qtdvsel))/qtd
     erro =  ((qtdh-qtdhsel)+qtdvsel+qtdfsel)/qtd
+    
+    print("Porcentagem do software dizer que possui e ser verdade : {:.2f} %".format((qtdhsel/qtd)*100))
+    print("Porcentagem do software dizer que possui e ser mentira : {:.2f} %".format((  (qtdvsel+qtdfsel)/qtd   )*100))
+    print("Porcentagem do software dizer que não possui e ser verdade : {:.2f} %".format((((qtdf-qtdfsel)+(qtdv-qtdvsel))/qtd)*100))
+    print("Porcentagem do software dizer que não possui e ser mentira : {:.2f} %".format(((qtdh-qtdhsel)/qtd)*100))
+    print("\n\n")
 
     print("Porcentagem de acerto : {:.2f} %".format(acerto*100))
     print("Porcentagem de erro : {:.2f} %".format(erro*100))
 
 
+def probabilidade_geral():
+    df = get_dados_pad()
 
-df = get_dados_pad()
+    print('Total amostra de F: '+str(len(df[df['grupo']=='F'])/2))
+    print('Total amostra de H: '+str(len(df[df['grupo']=='H'])/2))
+    print('Total amostra de V: '+str(len(df[df['grupo']=='V'])/2))
+    print('Total amostra :'+str(len(df)/2)+"\n")
+    vitifiltro = filtro_viti(df)
+    filtrohan = filtro_han(vitifiltro,10,'r')
+    print("sem passar pelo primeiro filtro")
+    filtrohan2 = filtro_han(df['foto'],10,'r')
 
-print('Total amostra de F: '+str(len(df[df['foto'].str.startswith("F")])/2))
-print('Total amostra de H: '+str(len(df[df['foto'].str.startswith("H")])/2))
-print('Total amostra de V: '+str(len(df[df['foto'].str.startswith("V")])/2))
-print('Total amostra :'+str(len(df)/2)+"\n")
-vitifiltro = filtro_viti(df)
-filtrohan = filtro_han(vitifiltro,10,'r')
-print("sem passar pelo primeiro filtro")
-filtrohan2 = filtro_han(df['foto'],10,'r')
+    acerto(df,filtrohan)
+    
+def probabilidade_foto(nome):
+    df = todos_dados()
+    df=df[df['foto']==nome]
+    print(df)
+    dados_padronizados(df,nome)
+    
+def dados_padronizados(df,nome):
+    
+    dentro = df[df['tempo']=='0s']
+    fora = df[df['tempo']=='30s']
+    
+    pixel_dentro = moda(arq,"dentro")
+        #dados(pixel_dentro[0], pixel_dentro[1], pixel_dentro[2], bd[0], bd[1], "dentro",pixel_dentro[3])
+        
+        
+    pixel_fora = moda(arq,"fora")
+    #dados(pixel_fora[0], pixel_fora[1], pixel_fora[2], bd[0], bd[1], "fora",pixel_fora[3])
+    canalrgb.append((pixel_dentro[0][0])-(pixel_fora[0][0]))
+    canalrgb.append((pixel_dentro[0][1])-(pixel_fora[0][1]))
+    canalrgb.append((pixel_dentro[0][2])-(pixel_fora[0][2]))
+    
+    canalhsv.append((pixel_dentro[1][0])-(pixel_fora[1][0]))
+    canalhsv.append((pixel_dentro[1][1])-(pixel_fora[1][1]))
+    canalhsv.append((pixel_dentro[1][2])-(pixel_fora[1][2]))
+    
+    canalhls.append((pixel_dentro[2][0])-(pixel_fora[2][0]))
+    canalhls.append((pixel_dentro[2][1])-(pixel_fora[2][1]))
+    canalhls.append((pixel_dentro[2][2])-(pixel_fora[2][2]))
+    
+    #rgb[1]=int(pixel_dentro[0][1])-int(pixel_fora[0][1])
+    #rgb[2]=int(pixel_dentro[0][2])-int(pixel_fora[0][2])
+    #print(canal)
+    dados_padra(canalrgb, canalhsv, canalhls, bd[0], bd[1] )
+    #dados_padra(rgb, hsv, hls, nome, tempo )
+    print(fora)
+    print(dentro)
 
-acerto(df,filtrohan)
 
-#print(filtrohan)
-#print(filtrohan2)
-#print(vitifiltro)
+
+def filtro_individual(df_padr,df_full):
+    
+    
+    df_padr1 = df_padr[df_padr['tempo']=='0s']
+    
+    if(int(df_padr1['s1'])>=40):
+        print("calcular se é vitiligo")
+    else:
+        
+    
+        if(int(df_full['r'])>=10):
+            print("calcular se é hanseniase")
+        else:
+            print("calcular se é normal")

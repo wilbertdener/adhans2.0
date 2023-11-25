@@ -94,7 +94,7 @@ def dados_padra(rgb, hsv, hls, nome, tempo ):
 def dados_padra_semtime(rgb, hsv, hls, nome ):
       
   mycursor = mydb.cursor()
-  sql = "INSERT INTO dados_pad_lesao_time (grupo,r,g,b,h1,s1,v,h2,l,s2) VALUES (%s, %s, %s,%s, %s, %s,%s, %s, %s,%s)"
+  sql = "INSERT INTO dados_pad_lesao_time (foto,r,g,b,h1,s1,v,h2,l,s2) VALUES (%s, %s, %s,%s, %s, %s,%s, %s, %s,%s)"
   val = (nome, rgb[0],rgb[1],rgb[2],hsv[0],hsv[1],hsv[2],hls[0],hls[1],hls[2])
   mycursor.execute(sql, val)
   mydb.commit()
@@ -116,4 +116,17 @@ def probabilidade(rgb, hsv, hls, grupo,menor ):
 def get_dados_pad():
   mycursor = mydb.cursor()
   df = pd.read_sql_query("SELECT * FROM dados_padronizados " , mydb)
+  return df
+
+
+def get_dados_pad_by_foto(foto):
+  mycursor = mydb.cursor()
+  df = pd.read_sql_query("SELECT * FROM dados_padronizados WHERE foto ='%s'" %foto, mydb)
+  
+  return df
+
+
+def get_dados_full_foto(foto):
+  mycursor = mydb.cursor()
+  df = pd.read_sql_query("SELECT * FROM dados_pad_lesao_time WHERE foto ='%s'" %foto, mydb)
   return df

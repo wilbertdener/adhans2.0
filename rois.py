@@ -9,6 +9,8 @@ def lista_pixel(arq, local, tipo):
     
     for i in range(1,4):
         rgb = cv2.imread("roi "+local+"/"+arq+"roi"+str(i)+".jpg")
+       
+        
         if(tipo=="hsv"):
             img = cv2.cvtColor(rgb, cv2.COLOR_BGR2HSV)
         elif(tipo=="hls"):
@@ -38,7 +40,7 @@ def juncao(arq, local):#aqui
     
             
 def moda(arq, local):
-       
+    
     pixels = juncao(arq, local)      
     
     
@@ -78,106 +80,151 @@ def moda(arq, local):
     
 
 
-def salva_no_bd():
+def salva_no_bd(nome1= None ,nome2=None):
+    canalrgb =[]
+    canalhsv =[]
+    canalhls =[]
+
+
+    valortime0=[]
+    valorrgbbd=[]
+    valorhsvbd=[]
+    valorhlsbd=[]
     
-    allarq = get_nome()
+    if(nome1):
+        allarq = get_nome(False,nome1,nome2)
+        
+        
+    else:
+        allarq = get_nome()
+        
+    
+    #print(allarq)
+    count =0
     for arq in allarq:
         bd = list(arq.split(" "))
-        histamina(bd[0][0],bd[0], bd[1])
+        #histamina(bd[0][0],bd[0], bd[1])
+        nome=nome1[:-1]
+        if(count==0):
+            
+            tempo="0s"
+            count=count+1
+        else:
+            tempo="30s"
+            count=0
         
         
-        pixel_dentro = moda(arq,"dentro")
-        dados(pixel_dentro[0], pixel_dentro[1], pixel_dentro[2], bd[0], bd[1], "dentro",pixel_dentro[3])
+        pixel_dentro = moda(bd[0]+" "+tempo,"dentro")
         
+        dados(pixel_dentro[0], pixel_dentro[1], pixel_dentro[2], nome, tempo, "dentro",pixel_dentro[3])
+        #print(pixel_dentro)
         
-        pixel_fora = moda(arq,"fora")
-        dados(pixel_fora[0], pixel_fora[1], pixel_fora[2], bd[0], bd[1], "fora",pixel_fora[3])
+        pixel_fora = moda(bd[0]+" "+tempo,"fora")
+        #print(pixel_fora)
+        #print('\n\n')
+        
+        dados(pixel_fora[0], pixel_fora[1], pixel_fora[2], nome, tempo, "fora",pixel_fora[3])
+        
+        canalrgb.append(abs((pixel_dentro[0][0])-(pixel_fora[0][0])))
+        canalrgb.append(abs((pixel_dentro[0][1])-(pixel_fora[0][1])))
+        canalrgb.append(abs((pixel_dentro[0][2])-(pixel_fora[0][2])))
+        
+        canalhsv.append(abs((pixel_dentro[1][0])-(pixel_fora[1][0])))
+        canalhsv.append(abs((pixel_dentro[1][1])-(pixel_fora[1][1])))
+        canalhsv.append(abs((pixel_dentro[1][2])-(pixel_fora[1][2])))
+        
+        canalhls.append(abs((pixel_dentro[2][0])-(pixel_fora[2][0])))
+        canalhls.append(abs((pixel_dentro[2][1])-(pixel_fora[2][1])))
+        canalhls.append(abs((pixel_dentro[2][2])-(pixel_fora[2][2])))
+        
+        #rgb[1]=int(pixel_dentro[0][1])-int(pixel_fora[0][1])
+        #rgb[2]=int(pixel_dentro[0][2])-int(pixel_fora[0][2])
+        #print(canal)
+        dados_padra(canalrgb, canalhsv, canalhls, bd[0][:-1], tempo )
+        if(tempo=='0s'):
+            valortime0.append(canalrgb)
+            valortime0.append(canalhsv)
+            valortime0.append(canalhls)
+        else:
+            
+            
+            valorrgbbd.append(abs(abs(valortime0[0][0])-abs(canalrgb[0])))
+            valorrgbbd.append(abs(abs(valortime0[0][1])-abs(canalrgb[1])))
+            valorrgbbd.append(abs(abs(valortime0[0][2])-abs(canalrgb[2])))
+            
+            valorhsvbd.append(abs(abs(valortime0[1][0])-abs(canalhsv[0])))
+            valorhsvbd.append(abs(abs(valortime0[1][1])-abs(canalhsv[1])))
+            valorhsvbd.append(abs(abs(valortime0[1][2])-abs(canalhsv[2])))
+            
+            valorhlsbd.append(abs(abs(valortime0[2][0])-abs(canalhls[0])))
+            valorhlsbd.append(abs(abs(valortime0[2][1])-abs(canalhls[1])))
+            valorhlsbd.append(abs(abs(valortime0[2][2])-abs(canalhls[2])))
+            print(valorrgbbd)
+            print(valorhsvbd)
+            print(valorhlsbd)
+            print(bd[0][:-1])
+            dados_padra_semtime(valorrgbbd, valorhsvbd, valorhlsbd, bd[0][:-1] )
+            valortime0=[]
+            valorrgbbd=[]
+            valorhsvbd=[]
+            valorhlsbd=[]
+        
+        canalrgb =[]
+        canalhsv =[]
+        canalhls =[]
             
    
-def get_nome(chave=True):
-    arquivos = listardiretorio("roi dentro")
-    arq2 = []
-    allarq = []
-    allarq2 = []
-    for arq in arquivos:
-        if(arq[8]=="s"):
-            arq2.append(arq[0:9])
-        elif(arq[7]=="s"):
-            arq2.append(arq[0:8])
-        elif(arq[9]=="s"):
-            arq2.append(arq[0:10])
-        elif(arq[6]=="s"):
-            arq2.append(arq[0:7])
+def get_nome(chave=True,nome1=None,nome2=None):
+    if(nome1):
+        arq = listardiretorio("roi dentro")
+        arquivos=[]
+        arq2 = []
+        allarq = []
+        allarq2 = []
+        for x in arq:
+            
+            if(x.startswith(nome1)):
+                arquivos.append(x)
+                
+            if(x.startswith(nome2)):
+                arquivos.append(x)
+                
+        for sigla in sorted(set(arquivos)):
+            allarq.append(sigla)
+            
+        for nome in allarq:
+            allarq2.append(nome.split(" ")[0])
+        if(chave):
+            return allarq
         else:
-            print(arq)
+            return sorted(set(allarq2))       
         
-        
-
-    for sigla in sorted(set(arq2)):
-        allarq.append(sigla)
-        
-    for nome in allarq:
-        allarq2.append(nome.split(" ")[0])
-    if(chave):
-        return allarq
     else:
-        return sorted(set(allarq2))
+        arquivos = listardiretorio("roi dentro")
+        arq2 = []
+        allarq = []
+        allarq2 = []
+        for arq in arquivos:
+            if(arq[8]=="s"):
+                arq2.append(arq[0:9])
+            elif(arq[7]=="s"):
+                arq2.append(arq[0:8])
+            elif(arq[9]=="s"):
+                arq2.append(arq[0:10])
+            elif(arq[6]=="s"):
+                arq2.append(arq[0:7])
+            else:
+                print(arq)
+            
+            
 
-#print(get_nome(False))
+        for sigla in sorted(set(arq2)):
+            allarq.append(sigla)
+            
+        for nome in allarq:
+            allarq2.append(nome.split(" ")[0])
+        if(chave):
+            return allarq
+        else:
+            return sorted(set(allarq2))
 
-
-#salva_no_bd()
-"""df = get_dados('H1-1 0s')
-print(df)
-for x in df:
-  print(x)"""
-  
-'''df = dados_pd('H1-1 0s')
-df_fora = df[df ['lesao'] == "fora"]
-df_dentro =df[df ['lesao'] == "dentro"]
-
-print("dentro")
-print(df_dentro.head())
-print("fora")
-print(df_fora.head())'''
-
-def teste_histamina(diretorio):
-    df_inicial = dados_pd(diretorio+' 0s')
-    df_final = dados_pd(diretorio+' 30s')
-    df = pd.concat([df_inicial, df_final])
-    
-    
-    df_fora = df[df['lesao'] == "fora"]
-    df_dentro =df[df['lesao'] == "dentro"]
-    
-    print("dentro")
-    print(df_dentro.head(12))
-    print("fora")
-    print(df_fora.head(12))
-    
-    
-
-
-
-# dados -> 216 ->72
-# histamina -> 36 ->36
-#salva_no_bd()
-
-#teste_histamina('H1-1')
-
-'''df= todos_dados()
-df_fora = df[df['lesao'] == "fora"]
-df_dentro =df[df['lesao'] == "dentro"]
-
-df_dentro_antes = df_dentro[df_dentro['tempo'] == "0s"]
-df_dentro_pos = df_dentro[df_dentro['tempo'] == "30s"]
-#print(df_dentro_antes.sort_values(by=['foto']).head())
-#print(df_dentro_pos.sort_values(by=['foto']).head())
-
-#print(df_dentro_pos[df_dentro_pos['foto'].str.startswith('H1')].sort_values(by=['foto']).head())
-
-df_ordenado = df.sort_values(by=['foto','tempo'])
-df_ordenado = df_ordenado.drop([ 'h2','total_pixels','id'], axis=1)
-filtro = df_ordenado[df_ordenado['foto'].str.startswith('H3')]
-print(filtro)
-df_ordenado.to_excel("resultados.xlsx")'''
