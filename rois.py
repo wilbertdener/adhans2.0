@@ -159,10 +159,7 @@ def salva_no_bd(nome1= None ,nome2=None):
             valorhlsbd.append(abs(abs(valortime0[2][0])-abs(canalhls[0])))
             valorhlsbd.append(abs(abs(valortime0[2][1])-abs(canalhls[1])))
             valorhlsbd.append(abs(abs(valortime0[2][2])-abs(canalhls[2])))
-            print(valorrgbbd)
-            print(valorhsvbd)
-            print(valorhlsbd)
-            print(bd[0][:-1])
+            
             dados_padra_semtime(valorrgbbd, valorhsvbd, valorhlsbd, bd[0][:-1] )
             valortime0=[]
             valorrgbbd=[]
