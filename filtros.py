@@ -52,6 +52,9 @@ def filtro_viti(df):
     filtrof2 = filtrof[abs(filtrof['s1'])<=40]
     filtrov2 = filtrov[abs(filtrov['s1'])<=40]
     
+    sfiltroh2 = filtroh[abs(filtroh['s1'])>40]
+    sfiltrof2 = filtrof[abs(filtrof['s1'])>40]
+    sfiltrov2 = filtrov[abs(filtrov['s1'])>40]
     '''print("Media han: "+str(mean(abs(filtroh['b']))))
     print("max han: "+str(max(abs(filtroh['b']))))
     #print(median(filtrof['r']))
@@ -75,8 +78,9 @@ def filtro_viti(df):
     
     
     result = pd.concat([filtroh2, filtrov2,filtrof2])
+    result2 = pd.concat([sfiltroh2, sfiltrov2,sfiltrof2])
     
-    return(result['foto'].values.tolist())
+    return([result['foto'].values.tolist(),result2['foto'].values.tolist()])
  
  
 def filtro_han(nomes, num, canal):
@@ -139,11 +143,15 @@ print('Total amostra de H: '+str(len(df[df['foto'].str.startswith("H")])/2))
 print('Total amostra de V: '+str(len(df[df['foto'].str.startswith("V")])/2))
 print('Total amostra :'+str(len(df)/2)+"\n")
 vitifiltro = filtro_viti(df)
-filtrohan = filtro_han(vitifiltro,10,'r')
+filtrohan = filtro_han(vitifiltro[0],10,'r')
 print("sem passar pelo primeiro filtro")
-filtrohan2 = filtro_han(df['foto'],10,'r')
 
-acerto(df,filtrohan)
+print(vitifiltro[1])
+filtrohan2 = filtro_han(vitifiltro[1],10,'r')
+print(filtrohan2)
+#filtrohan2 = filtro_han(df['foto'],10,'r')
+
+#acerto(df,filtrohan)
 
 #print(filtrohan)
 #print(filtrohan2)
