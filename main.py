@@ -15,6 +15,6 @@ from filtros import *
 #salva_no_bd('hans1','hans2')
 df_padr = get_dados_pad_by_foto('hans')
 df_full = get_dados_full_foto('hans')
-filtro_individual(df_padr,df_full)
+filtro_individual(df_padr,df_full,"hans")
 
 #probabilidade_foto('hans')

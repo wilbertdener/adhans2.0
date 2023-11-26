@@ -118,6 +118,10 @@ def get_dados_pad():
   df = pd.read_sql_query("SELECT * FROM dados_padronizados " , mydb)
   return df
 
+def get_dados_full():
+  mycursor = mydb.cursor()
+  df = pd.read_sql_query("SELECT * FROM dados " , mydb)
+  return df
 
 def get_dados_pad_by_foto(foto):
   mycursor = mydb.cursor()

@@ -205,11 +205,14 @@ def dados_padronizados(df,nome):
 
 
 
-def filtro_individual(df_padr,df_full):
+def filtro_individual(df_padr,df_full,nome):
+    
     df2 = get_dados_pad_les_tim()
     df1 = get_dados_pad()
     
     df_padr1 = df_padr[df_padr['tempo']=='0s']
+    df_padr2 = df_padr[df_padr['tempo']=='30s']
+    
     #pegar todos dados_padronizados
     #pegar todos dados_pad_lesao_time
     
@@ -233,6 +236,8 @@ def filtro_individual(df_padr,df_full):
             probhans = len(filtro_1)/len(df2[df2['grupo']=="H"])
             print("Probabilidade de ser Hanseniase: {:.2f} %".format(probhans*100)) 
             print(str(len(filtro_1))+ " caso em "+str(len(df2[df2['grupo']=="H"])) + " registrados")
+            print(df_padr1['r'])
+            print(df_padr2['r'])
             
             
             

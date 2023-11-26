@@ -1,10 +1,11 @@
 import cv2
 import numpy as np 
-from rois_antigo import *
+#from rois_antigo import *
+from bd import *
 #Suavização de imagens
 #img = cv2.imread('blur/blur.jpg') 
-img = cv2.imread('blur/blur2.jpg')
-img = img[::4,::4]
+#img = cv2.imread('blur/blur2.jpg')
+#img = img[::4,::4]
 def visualizar_tudo(img,vet):
     suave = np.vstack([ 
                     np.hstack([img, vet[0]]), 
@@ -153,5 +154,29 @@ def view_all_filtros(img,size,nome):
 
     visualizar(img,imagens,nome)
 
-view_all_filtros(img,11,"filtro 11")#3,5,7,9,11
-view_all_filtros(img,5,"filtro 5")
+#view_all_filtros(img,11,"filtro 11")#3,5,7,9,11
+#view_all_filtros(img,5,"filtro 5")
+
+
+
+####################################################
+df = get_dados_pad()
+df=df[df['tempo']=='0s']
+dfh = df[df['grupo']=='H']
+dfv = df[df['grupo']=='V']
+dff = df[df['grupo']=='F']
+print("H media mediana")
+print(dfh['r'].max())
+print(dfh['r'].min())
+print("V media mediana")
+print(dfv['r'].max())
+print(dfv['r'].min())
+print("F media mediana")
+print(dff['r'].max())
+print(dff['r'].min())
+
+
+#lista = df['foto'].values.tolist()
+#.values.tolist()
+#print(lista)
+#print(len(lista))
