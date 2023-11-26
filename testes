@@ -160,20 +160,38 @@ def view_all_filtros(img,size,nome):
 
 
 ####################################################
+print("antes")
 df = get_dados_pad()
 df=df[df['tempo']=='0s']
 dfh = df[df['grupo']=='H']
 dfv = df[df['grupo']=='V']
 dff = df[df['grupo']=='F']
 print("H media mediana")
-print(dfh['r'].max())
-print(dfh['r'].min())
+print(abs(dfh['r']).max())
+print(abs(dfh['r']).min())
+
 print("V media mediana")
-print(dfv['r'].max())
-print(dfv['r'].min())
+print(abs(dfv['r']).max())
+print(abs(dfv['r']).min())
 print("F media mediana")
-print(dff['r'].max())
-print(dff['r'].min())
+print(abs(dff['r']).max())
+print(abs(dff['r']).min())
+
+print('depois')
+df = get_dados_pad()
+df=df[df['tempo']=='30s']
+dfh = df[df['grupo']=='H']
+dfv = df[df['grupo']=='V']
+dff = df[df['grupo']=='F']
+print("H media mediana")
+print(abs(dfh['r']).max())
+print(abs(dfh['r']).min())
+print("V media mediana")
+print(abs(dfv['r']).max())
+print(abs(dfv['r']).min())
+print("F media mediana")
+print(abs(dff['r']).max())
+print(abs(dff['r']).min())
 
 
 #lista = df['foto'].values.tolist()
