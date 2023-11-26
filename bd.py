@@ -130,3 +130,17 @@ def get_dados_full_foto(foto):
   mycursor = mydb.cursor()
   df = pd.read_sql_query("SELECT * FROM dados_pad_lesao_time WHERE foto ='%s'" %foto, mydb)
   return df
+
+def set_dados_padra_semtime(nome,tipo ):
+      
+  mycursor = mydb.cursor()
+ 
+  sql = "UPDATE dados_pad_lesao_time SET grupo = %s WHERE foto = %s"
+  
+  val = (tipo, nome)
+  mycursor.execute(sql, val)
+  mydb.commit()
+  
+  
+  
+  
